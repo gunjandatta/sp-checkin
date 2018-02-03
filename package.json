@@ -1,0 +1,27 @@
+{
+  "name": "sp-checkin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gunjandatta/sp-checkin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gunjandatta/sp-checkin/issues"
+  },
+  "homepage": "https://github.com/gunjandatta/sp-checkin#readme",
+  "dependencies": {
+    "gd-sprest": "^3.3.1"
+  },
+  "devDependencies": {
+    "core-js": "^2.5.3",
+    "webpack": "^3.10.0"
+  }
+}
