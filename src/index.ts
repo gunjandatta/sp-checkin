@@ -16,7 +16,7 @@ class CheckInDemo {
     constructor() {
         // Wait for the page to be loaded
         window.addEventListener("load", () => {
-            // Wait for the notification class to be made available, so we can reference the status class
+            // Wait for the sp.js core script to be loaded, so we can reference the notify and status class
             SP.SOD.executeOrDelayUntilScriptLoaded(() => {
                 // Validate the user
                 this.validateUser();
