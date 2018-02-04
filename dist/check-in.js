@@ -2448,8 +2448,9 @@ var CheckInDemo = /** @class */ (function () {
      * Constructor
      */
     function CheckInDemo() {
-        // Wait for the notification class to be made available, so we can reference the status class
-        SP.SOD.executeOrDelayUntilScriptLoaded(function () {
+        var _this = this;
+        // Method to validate the user
+        this.validateUser = function () {
             // Check the cache
             if (ds_1.Datasource.checkCache()) {
                 return;
@@ -2481,7 +2482,15 @@ var CheckInDemo = /** @class */ (function () {
                     SP.UI.Status.setStatusPriColor(statusId, "red");
                 }
             });
-        }, "sp.js");
+        };
+        // Wait for the page to be loaded
+        window.addEventListener("load", function () {
+            // Wait for the notification class to be made available, so we can reference the status class
+            SP.SOD.executeOrDelayUntilScriptLoaded(function () {
+                // Validate the user
+                _this.validateUser();
+            }, "sp.js");
+        });
     }
     // Configuration
     CheckInDemo.Configuration = cfg_1.Configuration;
@@ -11222,7 +11231,7 @@ var Mapper = __webpack_require__(12);
  * SharePoint REST Library
  */
 exports.$REST = {
-    __ver: 3.32,
+    __ver: 3.33,
     ContextInfo: Lib.ContextInfo,
     DefaultRequestToHostFl: false,
     Helper: {

@@ -14,41 +14,50 @@ class CheckInDemo {
      * Constructor
      */
     constructor() {
-        // Wait for the notification class to be made available, so we can reference the status class
-        SP.SOD.executeOrDelayUntilScriptLoaded(() => {
-            // Check the cache
-            if (Datasource.checkCache()) { return; }
+        // Wait for the page to be loaded
+        window.addEventListener("load", () => {
+            // Wait for the notification class to be made available, so we can reference the status class
+            SP.SOD.executeOrDelayUntilScriptLoaded(() => {
+                // Validate the user
+                this.validateUser();
+            }, "sp.js");
+        });
+    }
 
-            // Get the user
-            Datasource.getTeamMember().then(item => {
-                // Ensure the item exists
-                if (item) {
-                    // Ensure the status is active
-                    let status = (item.CheckInStatus ? item.CheckInStatus.Label : "").toLowerCase();
-                    if (status != "active") {
-                        // Display a status
-                        let statusId = SP.UI.Status.addStatus("Checking In", "Welcome " + item.TeamMember.Title + ", we are checking you in.");
-                        SP.UI.Status.setStatusPriColor(statusId, "yellow");
+    // Method to validate the user
+    private validateUser = () => {
+        // Check the cache
+        if (Datasource.checkCache()) { return; }
 
-                        // Check the user in
-                        Datasource.checkTeamMemberIn(item).then(() => {
-                            // Clear the statuses
-                            SP.UI.Status.removeStatus(statusId);
-
-                            // Display a notification
-                            SP.UI.Notify.addNotification("Thank you for checking in.");
-
-                            // Update the session
-                            Datasource.updateCache();
-                        });
-                    }
-                } else {
+        // Get the user
+        Datasource.getTeamMember().then(item => {
+            // Ensure the item exists
+            if (item) {
+                // Ensure the status is active
+                let status = (item.CheckInStatus ? item.CheckInStatus.Label : "").toLowerCase();
+                if (status != "active") {
                     // Display a status
-                    let statusId = SP.UI.Status.addStatus("Unknown Team Member", "Please contact the site admin to be added to the team member list.");
-                    SP.UI.Status.setStatusPriColor(statusId, "red");
+                    let statusId = SP.UI.Status.addStatus("Checking In", "Welcome " + item.TeamMember.Title + ", we are checking you in.");
+                    SP.UI.Status.setStatusPriColor(statusId, "yellow");
+
+                    // Check the user in
+                    Datasource.checkTeamMemberIn(item).then(() => {
+                        // Clear the statuses
+                        SP.UI.Status.removeStatus(statusId);
+
+                        // Display a notification
+                        SP.UI.Notify.addNotification("Thank you for checking in.");
+
+                        // Update the session
+                        Datasource.updateCache();
+                    });
                 }
-            });
-        }, "sp.js");
+            } else {
+                // Display a status
+                let statusId = SP.UI.Status.addStatus("Unknown Team Member", "Please contact the site admin to be added to the team member list.");
+                SP.UI.Status.setStatusPriColor(statusId, "red");
+            }
+        });
     }
 }
 

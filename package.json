@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/gunjandatta/sp-checkin#readme",
   "dependencies": {
-    "gd-sprest": "^3.3.2"
+    "gd-sprest": "^3.3.3"
   },
   "devDependencies": {
     "core-js": "^2.5.3",
