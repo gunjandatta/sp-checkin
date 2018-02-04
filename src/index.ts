@@ -24,7 +24,8 @@ class CheckInDemo {
                 // Ensure the item exists
                 if (item) {
                     // Ensure the status is active
-                    if (item.CheckInStatus && item.CheckInStatus.Label.toLowerCase() != "active") {
+                    let status = (item.CheckInStatus ? item.CheckInStatus.Label : "").toLowerCase();
+                    if (status != "active") {
                         // Display a status
                         let statusId = SP.UI.Status.addStatus("Checking In", "Welcome " + item.TeamMember.Title + ", we are checking you in.");
                         SP.UI.Status.setStatusPriColor(statusId, "yellow");

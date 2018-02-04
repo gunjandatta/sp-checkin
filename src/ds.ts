@@ -78,7 +78,7 @@ export const Datasource = {
                     }
 
                     // Resolve the request
-                    resolve(items.results ? items.results[0] : null as any);
+                    resolve(item);
                 });
         });
     },

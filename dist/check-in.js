@@ -889,7 +889,7 @@ var _Web = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "web";
         // See if the web url exists
         if (url) {
@@ -2459,7 +2459,8 @@ var CheckInDemo = /** @class */ (function () {
                 // Ensure the item exists
                 if (item) {
                     // Ensure the status is active
-                    if (item.CheckInStatus && item.CheckInStatus.Label.toLowerCase() != "active") {
+                    var status_1 = (item.CheckInStatus ? item.CheckInStatus.Label : "").toLowerCase();
+                    if (status_1 != "active") {
                         // Display a status
                         var statusId_1 = SP.UI.Status.addStatus("Checking In", "Welcome " + item.TeamMember.Title + ", we are checking you in.");
                         SP.UI.Status.setStatusPriColor(statusId_1, "yellow");
@@ -7398,6 +7399,7 @@ var BaseRequest = /** @class */ (function (_super) {
         // Update the target information
         targetInfo.bufferFl = methodConfig.requestType == _1.RequestType.GetBuffer;
         targetInfo.data = methodInfo.body;
+        targetInfo.defaultToWebFl = this.base.targetInfo.defaultToWebFl;
         targetInfo.method = methodInfo.requestMethod;
         // See if we are replacing the endpoint
         if (methodInfo.replaceEndpointFl) {
@@ -8840,7 +8842,7 @@ var _List = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "web/lists/getByTitle('" + listName + "')";
         // Add the methods
         _this.addMethods(_this, { __metadata: { type: "list" } });
@@ -8903,7 +8905,7 @@ var _Navigation = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "navigation";
         // See if the web url exists
         if (url) {
@@ -8950,7 +8952,7 @@ var _PeopleManager = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "sp.userprofiles.peoplemanager";
         // Add the methods
         _this.addMethods(_this, { __metadata: { type: "peoplemanager" } });
@@ -8992,7 +8994,7 @@ var _PeoplePicker = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface";
         _this.targetInfo.overrideDefaultRequestToHostFl = true;
         // Add the methods
@@ -9035,7 +9037,7 @@ var _ProfileLoader = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "sp.userprofiles.profileloader.getprofileloader";
         _this.targetInfo.method = "POST";
         // Add the methods
@@ -9078,7 +9080,7 @@ var _Search = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "search";
         // See if the web url exists
         if (url) {
@@ -9159,7 +9161,7 @@ var _Site = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "site";
         // See if the web url exists
         if (url) {
@@ -9214,7 +9216,7 @@ var _SocialFeed = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "social.feed";
         // Add the methods
         _this.addMethods(_this, { __metadata: { type: "socialfeed" } });
@@ -9283,7 +9285,7 @@ var _UserProfile = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "sp.userprofiles.profileloader.getprofileloader/getUserProfile";
         _this.targetInfo.method = "POST";
         // Add the methods
@@ -9326,7 +9328,7 @@ var _Utility = /** @class */ (function (_super) {
         // Call the base constructor
         _super.call(this, targetInfo) || this;
         // Default the properties
-        _this.defaultToWebFl = true;
+        _this.targetInfo.defaultToWebFl = true;
         _this.targetInfo.endpoint = "SP.Utilities.Utility";
         // See if the web url exists
         if (url) {
@@ -11220,7 +11222,7 @@ var Mapper = __webpack_require__(12);
  * SharePoint REST Library
  */
 exports.$REST = {
-    __ver: 3.31,
+    __ver: 3.32,
     ContextInfo: Lib.ContextInfo,
     DefaultRequestToHostFl: false,
     Helper: {
@@ -11317,14 +11319,14 @@ exports.Datasource = {
             })
                 .execute(function (items) {
                 // See if the item exists
-                var item = items.results[0];
+                var item = items.results ? items.results[0] : null;
                 if (item && item.CheckInStatus && item.CheckInStatus_0) {
                     // Update the MMS label
                     // Note - The value returned is the lookup id, not the value.
                     item.CheckInStatus.Label = (item.CheckInStatus_0 || "").split("|")[0];
                 }
                 // Resolve the request
-                resolve(items.results ? items.results[0] : null);
+                resolve(item);
             });
         });
     },
